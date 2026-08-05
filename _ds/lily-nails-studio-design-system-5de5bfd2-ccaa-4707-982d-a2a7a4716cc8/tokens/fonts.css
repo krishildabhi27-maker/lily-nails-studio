@@ -1,0 +1,5 @@
+/* Lily Nails Studio — Webfonts
+   SUBSTITUTION NOTE: no brand font files were provided. These are the closest
+   Google Fonts matches to the brief's "high-fashion editorial serif" + "clean
+   rounded sans". Swap the @font-face src for licensed brand files when available. */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&family=Ballet&display=swap');

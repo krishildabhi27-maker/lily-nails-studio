@@ -1,0 +1,52 @@
+/* Lily Nails Studio — Color tokens
+   Soft, airy, romantic. No neon, no hot pink, no harsh black, no heavy darks. */
+:root{
+  /* Base pinks */
+  --pink-blush:#FADBE8;
+  --pink-baby:#FFD6E7;
+  --pink-cottoncandy:#FFC9DD;
+  --pink-petal:#FFE7F0;      /* lightest wash */
+  --pink-deep:#F4B8CE;       /* deepest usable pink, still soft */
+
+  /* Whites & pearls */
+  --white-warm:#FFFDFD;
+  --white-pearl:#F9F7F8;
+  --white-cream:#FDF8F4;
+
+  /* Metallics & neutrals */
+  --rose-gold:#C08A8A;
+  --rose-gold-deep:#B0757C;
+  --champagne:#E7CBA9;
+  --champagne-deep:#D4AF7A;
+  --nude:#EAD9CE;
+  --beige-soft:#F0E6DD;
+
+  /* Ink — warm, never pure black */
+  --ink-900:#3D2E35;   /* headings */
+  --ink-700:#63505A;   /* body */
+  --ink-500:#8A7680;   /* muted / captions */
+  --ink-300:#C3B4BB;   /* borders, disabled text */
+  --line:#F0E1E8;      /* hairline dividers on pink */
+
+  /* Semantic aliases */
+  --surface-page:var(--white-warm);
+  --surface-card:var(--white-warm);
+  --surface-tint:var(--pink-petal);
+  --surface-sunken:var(--white-pearl);
+  --text-heading:var(--ink-900);
+  --text-body:var(--ink-700);
+  --text-muted:var(--ink-500);
+  --text-on-pink:var(--ink-900);
+  --accent:var(--rose-gold);
+  --accent-strong:var(--rose-gold-deep);
+  --accent-gold:var(--champagne-deep);
+  --border-soft:var(--line);
+  --border-strong:var(--ink-300);
+
+  /* Signature gradients */
+  --grad-hero:linear-gradient(150deg,var(--pink-petal) 0%,var(--white-warm) 45%,var(--pink-blush) 100%);
+  --grad-button:linear-gradient(135deg,var(--pink-cottoncandy) 0%,var(--pink-deep) 100%);
+  --grad-blush:linear-gradient(180deg,var(--pink-baby) 0%,var(--pink-blush) 100%);
+  --grad-champagne:linear-gradient(135deg,var(--champagne) 0%,var(--rose-gold) 100%);
+  --grad-glass:linear-gradient(135deg,rgba(255,255,255,.65) 0%,rgba(255,231,240,.35) 100%); /* @kind color */
+}

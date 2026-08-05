@@ -1,0 +1,35 @@
+/* Lily Nails Studio — Typography tokens */
+:root{
+  --font-display:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+  --font-body:'Jost','Century Gothic',system-ui,sans-serif;
+  --font-script:'Ballet','Cormorant Garamond',cursive; /* rare decorative accent only */
+
+  /* Editorial type scale (fluid-friendly base sizes) */
+  --fs-display:clamp(3rem,7vw,6rem); /* @kind font */   /* hero headline */
+  --fs-h1:3.25rem;
+  --fs-h2:2.5rem;
+  --fs-h3:1.875rem;
+  --fs-h4:1.375rem;
+  --fs-body-lg:1.1875rem;
+  --fs-body:1.0625rem;
+  --fs-small:0.9375rem;
+  --fs-caption:0.8125rem;
+  --fs-eyebrow:0.75rem;   /* uppercase tracked label */
+
+  /* Weights */
+  --fw-light:300; /* @kind font */
+  --fw-regular:400; /* @kind font */
+  --fw-medium:500; /* @kind font */
+  --fw-semibold:600; /* @kind font */
+
+  /* Line heights */
+  --lh-tight:1.05; /* @kind font */
+  --lh-snug:1.2; /* @kind font */
+  --lh-normal:1.6; /* @kind font */
+
+  /* Letter spacing */
+  --ls-display:-0.01em; /* @kind font */
+  --ls-tight:-0.005em; /* @kind font */
+  --ls-eyebrow:0.28em; /* @kind font */   /* airy uppercase eyebrows */
+  --ls-button:0.14em; /* @kind font */
+}
