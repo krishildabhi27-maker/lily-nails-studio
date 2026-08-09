@@ -54,7 +54,7 @@ function CartDrawer() {
   const fmt = window.LilyCart.fmt;
 
   // Backend base URL (set window.LILY_API_BASE in the page to point at your deployed API).
-  const API = window.LILY_API_BASE || "http://localhost:8080/api";
+  const API = "https://api.lilynailstudio.in/api";
   const loadRazorpay = () => new Promise((resolve, reject) => {
     if (window.Razorpay) return resolve();
     const s = document.createElement("script");
