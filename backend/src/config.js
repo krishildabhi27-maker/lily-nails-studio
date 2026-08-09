@@ -40,7 +40,7 @@ export const config = {
 export function assertConfig() {
   if (missing.length === 0) return;
   const msg = `Missing required env vars: ${missing.join(", ")}`;
-  if (config.nodeEnv === "production") {
+  if ((process.env.NODE_ENV || "development") === "production") {
     console.error(`[config] ${msg} — refusing to start.`);
     process.exit(1);
   }
