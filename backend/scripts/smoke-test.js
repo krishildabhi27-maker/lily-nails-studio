@@ -1,7 +1,7 @@
 // Local smoke test — exercises the full order flow against a running backend.
 // Usage:
 //   API_BASE=http://localhost:8080/api node scripts/smoke-test.js
-// Requires: backend running, Supabase reachable, products seeded, Razorpay TEST keys.
+// Requires: backend running, MySQL reachable, products seeded, Razorpay TEST keys.
 // It does NOT complete a real card payment (that needs the browser); instead it verifies
 // order creation, server-side pricing, input validation, and security guards.
 import crypto from "node:crypto";

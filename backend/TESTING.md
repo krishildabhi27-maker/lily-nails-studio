@@ -2,7 +2,7 @@
 
 Complete test coverage before go-live. All tests run against the **backend** with Razorpay in **test mode** and Shiprocket in a **test/sandbox account**. Frontend is only touched if a test reveals a real bug.
 
-Base URL below: `${API}` = `http://localhost:8080/api` locally, or your Render URL.
+Base URL below: `${API}` = `http://localhost:8080/api` locally, or your Hostinger backend URL.
 
 ---
 
@@ -28,7 +28,7 @@ Base URL below: `${API}` = `http://localhost:8080/api` locally, or your Render U
 - 3.2 AWB + courier + tracking_url populated when assignment succeeds.
 - 3.3 Simulate Shiprocket down (wrong creds/offline) → order stays **PAID**, shipment row `AWAITING_SHIPMENT`, no crash.
 
-## 4. Database verification (Supabase SQL editor)
+## 4. Database verification (phpMyAdmin / MySQL)
 - 4.1 `select count(*) from orders` increments by 1 per checkout.
 - 4.2 `order_items` rows match cart lines; `line_total = unit_price*quantity`.
 - 4.3 `customers` deduped by phone (repeat buyer → same row).
@@ -77,12 +77,12 @@ Base URL below: `${API}` = `http://localhost:8080/api` locally, or your Render U
 ---
 
 ## Production launch checklist
-- [ ] Supabase: `schema.sql` + migrations applied; `products` seeded and synced (`npm run sync-products`).
-- [ ] All env vars set on Render (Supabase, Razorpay **live**, Shiprocket, CORS_ORIGINS = your Netlify domain).
-- [ ] Razorpay switched from test → **live** keys after KYC; webhook URL points to Render `/api/webhook/razorpay`; webhook secret matches.
+- [ ] MySQL: `schema.mysql.sql` applied in phpMyAdmin; `products` seeded and synced (`npm run sync-products`).
+- [ ] All env vars set on Hostinger (MySQL, Razorpay **live**, Shiprocket, CORS_ORIGINS = your website domain).
+- [ ] Razorpay switched from test → **live** keys after KYC; webhook URL points to Hostinger `/api/webhook/razorpay`; webhook secret matches.
 - [ ] Shiprocket live API user + real pickup address + wallet funded.
-- [ ] `window.LILY_API_BASE` set to the Render URL on the deployed frontend.
-- [ ] HTTPS everywhere; CORS locked to the Netlify origin only.
+- [ ] `window.LILY_API_BASE` set to the Hostinger backend URL on the deployed frontend.
+- [ ] HTTPS everywhere; CORS locked to your website origin only.
 - [ ] Rate limiting enabled (Step 7).
 - [ ] Smoke test (`npm run smoke`) passes against staging.
 - [ ] One real ₹ transaction end-to-end, then refunded.
@@ -92,4 +92,4 @@ Base URL below: `${API}` = `http://localhost:8080/api` locally, or your Render U
 2. **Live KYC** — Razorpay + Shiprocket live modes need business verification (your action).
 3. **`GET /api/orders/:code`** currently returns limited fields; success page tracking works, but confirm it returns `awb`/`tracking_url` after the shipments refactor (verify in test 1.5 / 3.2).
 4. **No automated retry** for `AWAITING_SHIPMENT` orders yet — currently manual; optional cron in a later step.
-5. **Deployment files** (Netlify/Render) intentionally deferred to Step 8.
+5. **Deployment** is on Hostinger (see `DEPLOYMENT.md`).

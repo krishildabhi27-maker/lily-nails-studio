@@ -1,16 +1,15 @@
-// Sync Supabase `products` from the frontend app/data.jsx (single source of truth for
+// Sync the MySQL `products` table from the frontend app/data.jsx (single source of truth for
 // display). Parses the LILY_PRODUCTS array WITHOUT importing the huge base64 images,
-// then upserts id/name/price into Supabase. Run whenever prices change:
+// then upserts id/name/price into MySQL. Run whenever prices change:
 //
 //   node scripts/sync-products.js            # from backend/, with .env populated
 //   node scripts/sync-products.js --dry-run  # print what would change, write nothing
 //
-// Requires SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY in backend/.env.
+// Requires MYSQL_HOST/PORT/USER/PASSWORD/DATABASE in backend/.env.
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { createClient } from "@supabase/supabase-js";
-import { config } from "../src/config.js";
+import { pool } from "../src/db/mysql.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DATA_PATH = path.resolve(__dirname, "../../app/data.jsx");
@@ -19,7 +18,6 @@ const dryRun = process.argv.includes("--dry-run");
 // Pull id / name / price out of each product object literal, ignoring the image blob.
 function parseProducts(src) {
   const out = [];
-  // Split on object boundaries that contain an id: "..." — robust to the big image strings.
   const re = /id:\s*"([^"]+)"[\s\S]*?name:\s*"((?:[^"\\]|\\.)*)"[\s\S]*?price:\s*"([^"]+)"/g;
   let m;
   while ((m = re.exec(src))) {
@@ -44,20 +42,22 @@ async function main() {
 
   if (dryRun) { console.log("\n--dry-run: nothing written."); return; }
 
-  const supabase = createClient(config.supabase.url, config.supabase.serviceKey, {
-    auth: { persistSession: false },
-  });
-  const { error } = await supabase.from("products")
-    .upsert(products, { onConflict: "id" });
-  if (error) { console.error("Upsert failed:", error.message); process.exit(1); }
+  // Upsert each product (insert or update name/price/active).
+  for (const p of products) {
+    await pool.query(
+      `INSERT INTO products (id, name, price, active) VALUES (?, ?, ?, 1)
+       ON DUPLICATE KEY UPDATE name = VALUES(name), price = VALUES(price), active = 1`,
+      [p.id, p.name, p.price]
+    );
+  }
 
-  // Optionally deactivate DB products no longer present in data.jsx (kept for order history).
+  // Deactivate DB products no longer present in data.jsx (kept for order history).
   const ids = products.map(p => p.id);
-  const { error: deErr } = await supabase.from("products")
-    .update({ active: false }).not("id", "in", `(${ids.map(i => `"${i}"`).join(",")})`);
-  if (deErr) console.warn("Deactivate-stale warning:", deErr.message);
+  const placeholders = ids.map(() => "?").join(",");
+  await pool.query(`UPDATE products SET active = 0 WHERE id NOT IN (${placeholders})`, ids);
 
-  console.log(`\n✓ Synced ${products.length} products to Supabase.`);
+  console.log(`\n✓ Synced ${products.length} products to MySQL.`);
+  await pool.end();
 }
 
 main().catch(e => { console.error(e); process.exit(1); });

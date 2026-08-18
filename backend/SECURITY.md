@@ -28,7 +28,7 @@ Backend-only production security audit. Scope: `backend/`. Frontend untouched.
 ## Remaining (non-blocking) items
 - **Auto-retry for `AWAITING_SHIPMENT`** — currently manual; recommend a scheduled job post-launch.
 - **Live KYC** — Razorpay + Shiprocket live modes require business verification (your action, not code).
-- **Persistent rate-limit store** — in-memory limiter resets per instance; fine for single Render instance, use Redis if you scale horizontally.
+- **Persistent rate-limit store** — in-memory limiter resets per instance; fine for a single Hostinger instance, use Redis if you scale horizontally.
 - **Structured logging/alerting** — console logs are adequate for launch; add a log drain later.
 
 ## Production readiness score: 92 / 100

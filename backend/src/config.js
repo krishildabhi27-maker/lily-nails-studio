@@ -12,10 +12,18 @@ function need(key) {
 export const config = {
   port: Number(process.env.PORT || 8080),
   nodeEnv: process.env.NODE_ENV || "development",
-  corsOrigins: (process.env.CORS_ORIGINS || "").split(",").map(s => s.trim()).filter(Boolean),
-  supabase: {
-    url: need("SUPABASE_URL"),
-    serviceKey: need("SUPABASE_SERVICE_ROLE_KEY"),
+  corsOrigins: [...new Set([
+    "https://lightsteelblue-giraffe-467179.hostingersite.com",
+    "https://lilynailstudio.in",
+    "https://www.lilynailstudio.in",
+    ...(process.env.CORS_ORIGINS || "").split(",").map(s => s.trim()).filter(Boolean),
+  ])],
+  mysql: {
+    host: need("MYSQL_HOST"),
+    port: Number(process.env.MYSQL_PORT || 3306),
+    user: need("MYSQL_USER"),
+    password: need("MYSQL_PASSWORD"),
+    database: need("MYSQL_DATABASE"),
   },
   razorpay: {
     keyId: need("RAZORPAY_KEY_ID"),
@@ -34,6 +42,7 @@ export const config = {
     weight: Number(process.env.PARCEL_WEIGHT_KG || 0.3),
   },
   externalTimeoutMs: Number(process.env.EXTERNAL_TIMEOUT_MS || 12000),
+  adminKey: process.env.ADMIN_KEY || "",
 };
 
 // Fail fast in production if any critical secret is missing; warn in dev.
